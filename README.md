@@ -1,3 +1,4 @@
+````markdown
 # 🚆 RailOps Enterprise DBMS
 
 ### Smart Railway Operations & Management System
@@ -67,15 +68,27 @@ RailOps includes an **AWS Lambda** operational-insights component built with **A
    ├── 🛤️ Network Statistics
    ├── 🕐 Scheduling Analysis
    └── ⚠️ Attention List
-🧪 Run AWS Locally
+````
+
+### 🧪 Run AWS Locally
+
+```powershell
 cd aws
+
 sam validate --lint
+
 sam local invoke RailOpsStatsFunction --event events/stats-event.json
+
 sam local start-api --port 3000
+```
 
-The Lambda processes a read-only operational snapshot and returns structured insights to the RailOps dashboard.
+The Lambda processes a **read-only operational snapshot** and returns structured insights to the RailOps dashboard.
 
-🏗️ Architecture
+---
+
+## 🏗️ Architecture
+
+```text
 👤 Administrator
        │
        ▼
@@ -94,61 +107,109 @@ The Lambda processes a read-only operational snapshot and returns structured ins
                     │
                     ▼
                💡 Insights
-🛠️ Tech Stack
-Layer	Technology
-🐍 Backend	Python, Flask, Flask-SQLAlchemy
-🗄️ Database	SQLite / MySQL
-🎨 Frontend	HTML, CSS, JavaScript, Bootstrap 5.3
-☁️ AWS	Lambda, SAM CLI
-📊 Reports	PDF, Excel, CSV
-🚀 Deployment	Vercel
-🗄️ Database Design
-Entity	Purpose
-👤 User	Administrator accounts
-🚆 Train	Fleet master data
-📍 Station	Railway network nodes
-🛤️ Route	Railway network connections
-🕐 Schedule	Train timetable and platform assignments
-👥 Employee	Workforce management
-📊 Report	Report generation and audit data
-📸 Screenshots
-🖥️ Dashboard
+```
 
-⚙️ Management Module
+---
 
-🚀 Run Locally
+## 🛠️ Tech Stack
+
+| Layer         | Technology                           |
+| ------------- | ------------------------------------ |
+| 🐍 Backend    | Python, Flask, Flask-SQLAlchemy      |
+| 🗄️ Database  | SQLite / MySQL                       |
+| 🎨 Frontend   | HTML, CSS, JavaScript, Bootstrap 5.3 |
+| ☁️ AWS        | Lambda, SAM CLI                      |
+| 📊 Reports    | PDF, Excel, CSV                      |
+| 🚀 Deployment | Vercel                               |
+
+---
+
+## 🗄️ Database Design
+
+| Entity        | Purpose                                  |
+| ------------- | ---------------------------------------- |
+| 👤 `User`     | Administrator accounts                   |
+| 🚆 `Train`    | Fleet master data                        |
+| 📍 `Station`  | Railway network nodes                    |
+| 🛤️ `Route`   | Railway network connections              |
+| 🕐 `Schedule` | Train timetable and platform assignments |
+| 👥 `Employee` | Workforce management                     |
+| 📊 `Report`   | Report generation and audit data         |
+
+---
+
+## 📸 Screenshots
+
+### 🖥️ Dashboard
+
+![RailOps Dashboard](https://github.com/user-attachments/assets/80a22fb6-a6fd-47fe-ac0d-67d0501fc9f7)
+
+### ⚙️ Management Module
+
+![RailOps Management](https://github.com/user-attachments/assets/dbfc3f43-f6b4-428b-9cb9-245c63f36274)
+
+---
+
+## 🚀 Run Locally
+
+```powershell
 git clone https://github.com/ShambhaviCode/RailOps-Enterprise-DBMS-Hackathon.git
+
 cd RailOps-Enterprise-DBMS-Hackathon
 
 python -m venv .venv
+
 .\.venv\Scripts\Activate.ps1
 
 pip install -r requirements.txt
+
 python run.py
+```
 
-Open http://127.0.0.1:5000
+Open **[http://127.0.0.1:5000](http://127.0.0.1:5000)**
 
-🔑 Demo Login
+### 🔑 Demo Login
+
+```text
 👤 Username: admin
 🔐 Password: admin123
-🏆 Hackathon
+```
 
-Built as a solo project for the WeMakeDevs × AWS First Commit Hackathon under the Build It direction.
+---
 
-🗄️ Database Engineering + 🐍 Full-Stack Development + ☁️ AWS Serverless + 📊 Operational Analytics
+## 🏆 Hackathon
 
-👩‍💻 Built By
-Shambhavi M K
-Solo Developer & Team Leader
+Built as a **solo project for the WeMakeDevs × AWS First Commit Hackathon** under the **Build It** direction.
 
+**🗄️ Database Engineering + 🐍 Full-Stack Development + ☁️ AWS Serverless + 📊 Operational Analytics**
+
+---
+
+## 👩‍💻 Built By
+
+### Shambhavi M K
+
+**Solo Developer & Team Leader**
+
+💻 [GitHub](https://github.com/ShambhaviCode)
+
+💼 [LinkedIn](https://www.linkedin.com/in/shambhavi-m-k-1b6677378)
+
+---
 
 <p align="center">
-🚆 Connected Data. Smarter Operations. Better Railway Management.
+
+### 🚆 Connected Data. Smarter Operations. Better Railway Management.
 
 ⭐ Star the repository if you like RailOps!
 
 </p>
-📜 License
+
+---
+
+## 📜 License
 
 MIT License © Shambhavi
 
+```
+```
