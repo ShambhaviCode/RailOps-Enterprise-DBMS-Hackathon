@@ -210,5 +210,4 @@ Built as a **solo project for the WeMakeDevs × AWS First Commit Hackathon** und
 
 MIT License © Shambhavi
 
-```
-```
+
