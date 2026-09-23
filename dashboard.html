@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero-card" style="background-image: linear-gradient(90deg, rgba(6,26,51,.86), rgba(6,26,51,.34)), url('{{ url_for('static', filename='img/railway-hero.png') }}')">
+  <div>
+    <span class="badge text-bg-warning">Enterprise Dashboard</span>
+    <h2>Welcome to Railway Database Management System</h2>
+    <p>Monitor trains, stations, routes, schedules, employees, and reports from one professional control center.</p>
+  </div>
+</section>
+
+<section class="info-grid">
+  <div class="panel">
+    <h3>System Information</h3>
+    <div class="info-list">
+      <span>Database Status <strong>{{ db_status }}</strong></span>
+      <span>Database Name <strong>{{ db_name }}</strong></span>
+      <span>Logged In User <strong>{{ current_user.username }}</strong></span>
+      <span>User Type <strong>{{ current_user.user_type }}</strong></span>
+      <span>Application Version <strong>{{ app_version }}</strong></span>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Quick Access</h3>
+    <div class="quick-grid">
+      <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#quickTrain"><i class="fa-solid fa-plus"></i> Add Train</button>
+      <a class="btn btn-outline-primary" href="{{ url_for('module_list', module='stations') }}"><i class="fa-solid fa-plus"></i> Add Station</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('module_list', module='routes') }}"><i class="fa-solid fa-plus"></i> Add Route</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('schedules') }}"><i class="fa-solid fa-plus"></i> Add Schedule</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('module_list', module='employees') }}"><i class="fa-solid fa-plus"></i> Add Employee</a>
+      <a class="btn btn-warning" href="{{ url_for('reports') }}"><i class="fa-solid fa-file-export"></i> Generate Report</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats-grid">
+  {% set stat_data = [
+    ('Total Trains', counts.trains, 'fa-train', 'text-primary', 'trains'),
+    ('Total Stations', counts.stations, 'fa-location-dot', 'text-success', 'stations'),
+    ('Total Routes', counts.routes, 'fa-route', 'text-warning', 'routes'),
+    ('Total Employees', counts.employees, 'fa-users', 'text-danger', 'employees')
+  ] %}
+  {% for label, value, icon, color, module in stat_data %}
+  <article class="stat-card">
+    <i class="fa-solid {{ icon }} {{ color }}"></i>
+    <div>
+      <span>{{ label }}</span>
+      <strong>{{ value }}</strong>
+      <a href="{{ url_for('module_list', module=module) }}" class="btn btn-sm btn-rail">View Details</a>
+    </div>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="panel">
+  <h3>Latest Records</h3>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead><tr><th>Module</th><th>Record</th><th>Added On</th></tr></thead>
+      <tbody>
+        {% for module_name, records in latest.items() %}
+          {% for item in records %}
+            <tr>
+              <td>{{ module_name }}</td>
+              <td>
+                {% if module_name == 'Trains' %}{{ item.train_number }} - {{ item.train_name }}
+                {% elif module_name == 'Stations' %}{{ item.station_code }} - {{ item.station_name }}
+                {% elif module_name == 'Routes' %}{{ item.route_code }} - {{ item.route_name }}
+                {% else %}{{ item.employee_code }} - {{ item.full_name }}{% endif %}
+              </td>
+              <td>{{ item.created_at.strftime('%d %b %Y %H:%M') }}</td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="modal fade" id="quickTrain" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content needs-validation" method="post" action="{{ url_for('module_create', module='trains') }}" novalidate>
+      <div class="modal-header"><h5 class="modal-title">Add Train</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+      <div class="modal-body">
+        {% for name, label, type, required in modules.trains.fields %}
+          <label class="form-label">{{ label }}</label>
+          <input class="form-control mb-3" name="{{ name }}" type="{{ type }}" {% if required %}required{% endif %}>
+        {% endfor %}
+      </div>
+      <div class="modal-footer"><button class="btn btn-rail" type="submit">Save Train</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

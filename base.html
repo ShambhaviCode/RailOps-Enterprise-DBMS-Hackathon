@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or 'Railway DBMS' }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+{% if current_user %}
+<header class="top-header">
+  <div class="brand-block">
+    <div class="rail-logo"><i class="fa-solid fa-train-subway"></i></div>
+    <div>
+      <h1>RAILWAY DATABASE MANAGEMENT SYSTEM</h1>
+      <p>Efficient Railway Information Management</p>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span><i class="fa-solid fa-user-shield"></i> Welcome {{ current_user.full_name }}</span>
+    <span><i class="fa-solid fa-calendar"></i> {{ current_date }}</span>
+    <span><i class="fa-solid fa-clock"></i> <span id="istClock">--:--:-- IST</span></span>
+  </div>
+</header>
+<nav class="navbar navbar-expand-lg rail-nav">
+  <div class="container-fluid">
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="topNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('module_list', module='trains') }}">Trains</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('module_list', module='stations') }}">Stations</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('module_list', module='routes') }}">Routes</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('schedules') }}">Schedules</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('module_list', module='employees') }}">Employees</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('reports') }}">Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="{{ url_for('module_list', module='trains') }}"><i class="fa-solid fa-train"></i> Train Management</a>
+    <a href="{{ url_for('module_list', module='stations') }}"><i class="fa-solid fa-location-dot"></i> Station Management</a>
+    <a href="{{ url_for('module_list', module='routes') }}"><i class="fa-solid fa-route"></i> Route Management</a>
+    <a href="{{ url_for('schedules') }}"><i class="fa-solid fa-calendar-days"></i> Schedule Management</a>
+    <a href="{{ url_for('module_list', module='employees') }}"><i class="fa-solid fa-users-gear"></i> Employee Management</a>
+    <a href="{{ url_for('reports') }}"><i class="fa-solid fa-file-lines"></i> Report Generation</a>
+    <a href="{{ url_for('settings') }}"><i class="fa-solid fa-gear"></i> System Settings</a>
+  </aside>
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% else %}
+  {% block auth %}{% endblock %}
+{% endif %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="toast text-bg-{{ category if category in ['success','danger','warning','info'] else 'primary' }} border-0" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">{{ message }}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      </div>
+    {% endfor %}
+  {% endwith %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+instance/
+*.log
+.venv/
+.env
+.aws-sam/

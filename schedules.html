@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div><h2><i class="fa-solid fa-calendar-days"></i> Schedule Management</h2><p>Assign trains to routes with arrival, departure, and platform information.</p></div>
+  <button class="btn btn-rail" data-bs-toggle="modal" data-bs-target="#createModal"><i class="fa-solid fa-plus"></i> Add Schedule</button>
+</section>
+<section class="panel">
+  <form class="toolbar" method="get">
+    <input class="form-control" name="search" value="{{ search }}" placeholder="Search schedules">
+    <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-search"></i> Search</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('schedules') }}">Reset</a>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead><tr>
+        {% for name, label in config.columns %}
+          <th><a href="{{ url_for('schedules', search=search, sort=name, direction='desc' if sort == name and direction == 'asc' else 'asc') }}">{{ label }} <i class="fa-solid fa-sort"></i></a></th>
+        {% endfor %}
+        <th>Actions</th>
+      </tr></thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            {% for name, label in config.columns %}<td>{{ row[name] }}</td>{% endfor %}
+            <td class="actions">
+              <button class="btn btn-sm btn-outline-primary schedule-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-action="{{ url_for('schedule_update', item_id=row.id) }}" data-train_id="{{ row.train_id }}" data-route_id="{{ row.route_id }}" data-arrival_time="{{ row.arrival_time }}" data-departure_time="{{ row.departure_time }}" data-platform_number="{{ row.platform_number }}"><i class="fa-solid fa-pen"></i></button>
+              <form method="post" action="{{ url_for('schedule_delete', item_id=row.id) }}" onsubmit="return confirm('Delete this schedule?')"><button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button></form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-center">No schedules found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <nav><ul class="pagination">
+    {% for p in range(1, pages + 1) %}
+      <li class="page-item {{ 'active' if p == page else '' }}"><a class="page-link" href="{{ url_for('schedules', page=p, search=search, sort=sort, direction=direction) }}">{{ p }}</a></li>
+    {% endfor %}
+  </ul></nav>
+</section>
+
+{% macro schedule_fields(prefix='') %}
+  <label class="form-label">Train</label>
+  <select class="form-select mb-3" name="train_id" id="{{ prefix }}train_id" required>
+    {% for train in trains %}<option value="{{ train.id }}">{{ train.train_number }} - {{ train.train_name }}</option>{% endfor %}
+  </select>
+  <label class="form-label">Route</label>
+  <select class="form-select mb-3" name="route_id" id="{{ prefix }}route_id" required>
+    {% for route in routes %}<option value="{{ route.id }}">{{ route.route_name }}</option>{% endfor %}
+  </select>
+  <label class="form-label">Arrival Time</label><input class="form-control mb-3" name="arrival_time" id="{{ prefix }}arrival_time" type="time" required>
+  <label class="form-label">Departure Time</label><input class="form-control mb-3" name="departure_time" id="{{ prefix }}departure_time" type="time" required>
+  <label class="form-label">Platform Number</label><input class="form-control mb-3" name="platform_number" id="{{ prefix }}platform_number" required>
+{% endmacro %}
+
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog"><form class="modal-content needs-validation" method="post" action="{{ url_for('schedule_create') }}" novalidate>
+    <div class="modal-header"><h5 class="modal-title">Add Schedule</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+    <div class="modal-body">{{ schedule_fields() }}</div>
+    <div class="modal-footer"><button class="btn btn-rail">Save</button></div>
+  </form></div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog"><form id="editForm" class="modal-content needs-validation" method="post" novalidate>
+    <div class="modal-header"><h5 class="modal-title">Edit Schedule</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+    <div class="modal-body">{{ schedule_fields('edit_') }}</div>
+    <div class="modal-footer"><button class="btn btn-rail">Update</button></div>
+  </form></div>
+</div>
+{% endblock %}

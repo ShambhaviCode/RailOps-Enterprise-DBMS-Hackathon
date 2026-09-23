@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div>
+    <h2><i class="fa-brands fa-aws"></i> Operational Insights</h2>
+    <p>Live RailOps data analysed by the <code>railops-stats</code> AWS Lambda function, run locally with AWS SAM CLI.</p>
+  </div>
+  <div class="d-flex flex-column align-items-end gap-1">
+    {% if source == 'sam-local' %}
+      <span class="badge text-bg-success"><i class="fa-solid fa-bolt"></i> Executed in AWS Lambda runtime via <code class="text-white">sam local start-api</code></span>
+      <small class="text-muted">{{ stats_url }}</small>
+    {% else %}
+      <span class="badge text-bg-secondary"><i class="fa-solid fa-microchip"></i> In-process fallback (same Lambda handler code)</span>
+      <small class="text-muted">{{ error }}</small>
+      <small class="text-muted">Run <code>sam local start-api</code> in <code>aws/</code> to execute through AWS SAM.</small>
+    {% endif %}
+  </div>
+</section>
+
+<section class="stats-grid" style="margin-top:0">
+  <article class="stat-card"><i class="fa-solid fa-heart-pulse {{ 'text-success' if stats.health_score >= 70 else 'text-warning' if stats.health_score >= 40 else 'text-danger' }}"></i><div><span>Operations Health</span><strong>{{ stats.health_score }}<small style="font-size:16px">/100</small></strong></div></article>
+  <article class="stat-card"><i class="fa-solid fa-chair text-primary"></i><div><span>Total Seat Capacity</span><strong>{{ stats.fleet.total_seat_capacity }}</strong><small class="text-muted">avg {{ stats.fleet.average_capacity }} / train</small></div></article>
+  <article class="stat-card"><i class="fa-solid fa-road text-warning"></i><div><span>Network Length</span><strong>{{ stats.network.total_route_km }} km</strong><small class="text-muted">{{ stats.network.total_platforms }} platforms, {{ stats.network.states_covered }} states</small></div></article>
+  <article class="stat-card"><i class="fa-solid fa-calendar-check text-danger"></i><div><span>Routes Scheduled</span><strong>{{ stats.scheduling.routes_with_schedules }}/{{ stats.summary.routes }}</strong><small class="text-muted">busiest platform: {{ stats.scheduling.busiest_platform or 'n/a' }}</small></div></article>
+</section>
+
+<section class="info-grid">
+  <div class="panel">
+    <h3><i class="fa-solid fa-triangle-exclamation text-warning"></i> Needs attention
+      <span class="badge text-bg-danger">{{ stats.attention_count.high }} high</span>
+      <span class="badge text-bg-warning">{{ stats.attention_count.medium }} medium</span>
+      <span class="badge text-bg-secondary">{{ stats.attention_count.low }} low</span>
+    </h3>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead><tr><th>Severity</th><th>Module</th><th>Record</th><th>Issue</th></tr></thead>
+        <tbody>
+          {% for a in stats.attention %}
+          <tr>
+            <td><span class="badge text-bg-{{ 'danger' if a.severity == 'high' else 'warning' if a.severity == 'medium' else 'secondary' }}">{{ a.severity }}</span></td>
+            <td>{{ a.module }}</td><td>{{ a.item }}</td><td>{{ a.issue }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="text-success">No issues detected in the current operational data.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="panel">
+    <h3><i class="fa-solid fa-diagram-project text-primary"></i> How this works</h3>
+    <div class="info-list">
+      <span>1. Snapshot <strong>{{ stats.summary.trains }} trains, {{ stats.summary.stations }} stations, {{ stats.summary.routes }} routes, {{ stats.summary.schedules }} schedules, {{ stats.summary.employees }} employees</strong></span>
+      <span>2. POST /stats <strong>API Gateway emulation (sam local start-api)</strong></span>
+      <span>3. Lambda <strong>railops-stats &middot; python3.12 &middot; aws/functions/stats/app.py</strong></span>
+      <span>4. Result <strong>{{ stats.generated_by }}</strong></span>
+      <span>Largest train <strong>{{ stats.fleet.largest_train or 'n/a' }}</strong></span>
+      <span>Longest route <strong>{{ stats.network.longest_route or 'n/a' }}</strong></span>
+      <span>Active employees <strong>{{ stats.summary.active_employees }}/{{ stats.summary.employees }}</strong></span>
+    </div>
+    <p class="text-muted small mt-3 mb-0"><i class="fa-solid fa-lock"></i> Read-only: the function receives a copy of the data and never writes to the database. Employee phone numbers and emails are not sent.</p>
+    <details class="mt-3"><summary class="fw-bold">Raw Lambda response (JSON)</summary><pre class="small bg-light p-2 mt-2 mb-0" style="max-height:320px;overflow:auto">{{ stats | tojson(indent=2) }}</pre></details>
+  </div>
+</section>
+{% endblock %}

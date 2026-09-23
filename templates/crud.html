@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div><h2><i class="fa-solid {{ config.icon }}"></i> {{ config.title }}</h2><p>Add, edit, delete, search, sort, and paginate {{ config.singular.lower() }} records.</p></div>
+  <button class="btn btn-rail" data-bs-toggle="modal" data-bs-target="#createModal"><i class="fa-solid fa-plus"></i> Add {{ config.singular }}</button>
+</section>
+<section class="panel">
+  <form class="toolbar" method="get">
+    <input class="form-control" name="search" value="{{ search }}" placeholder="Search {{ config.singular.lower() }} records">
+    <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-search"></i> Search</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('module_list', module=module) }}">Reset</a>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead><tr>
+        {% for name, label in config.columns %}
+          <th><a href="{{ url_for('module_list', module=module, search=search, sort=name, direction='desc' if sort == name and direction == 'asc' else 'asc') }}">{{ label }} <i class="fa-solid fa-sort"></i></a></th>
+        {% endfor %}
+        <th>Actions</th>
+      </tr></thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          {% for name, label in config.columns %}<td>{{ row|attr(name) }}</td>{% endfor %}
+          <td class="actions">
+            <button class="btn btn-sm btn-outline-primary edit-button" data-bs-toggle="modal" data-bs-target="#editModal" data-action="{{ url_for('module_update', module=module, item_id=row.id) }}" {% for name, label, type, required in config.fields %} data-{{ name }}="{{ row|attr(name) }}"{% endfor %}><i class="fa-solid fa-pen"></i></button>
+            <form method="post" action="{{ url_for('module_delete', module=module, item_id=row.id) }}" onsubmit="return confirm('Delete this record?')"><button class="btn btn-sm btn-outline-danger" type="submit"><i class="fa-solid fa-trash"></i></button></form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="{{ config.columns|length + 1 }}" class="text-center">No records found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <nav><ul class="pagination">
+    {% for p in range(1, pagination.pages + 1) %}
+      <li class="page-item {{ 'active' if p == pagination.page else '' }}"><a class="page-link" href="{{ url_for('module_list', module=module, page=p, search=search, sort=sort, direction=direction) }}">{{ p }}</a></li>
+    {% endfor %}
+  </ul></nav>
+</section>
+
+{% macro render_fields(config, prefix='') %}
+  {% for name, label, type, required in config.fields %}
+    <label class="form-label">{{ label }}</label>
+    {% if type == 'select' %}
+      <select class="form-select mb-3" name="{{ name }}" id="{{ prefix }}{{ name }}" {% if required %}required{% endif %}>
+        {% for choice in config.choices[name] %}<option value="{{ choice }}">{{ choice }}</option>{% endfor %}
+      </select>
+    {% else %}
+      <input class="form-control mb-3" name="{{ name }}" id="{{ prefix }}{{ name }}" type="{{ type }}" {% if required %}required{% endif %}>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content needs-validation" method="post" action="{{ url_for('module_create', module=module) }}" novalidate>
+      <div class="modal-header"><h5 class="modal-title">Add {{ config.singular }}</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+      <div class="modal-body">{{ render_fields(config) }}</div>
+      <div class="modal-footer"><button class="btn btn-rail" type="submit">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form id="editForm" class="modal-content needs-validation" method="post" novalidate>
+      <div class="modal-header"><h5 class="modal-title">Edit {{ config.singular }}</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+      <div class="modal-body">{{ render_fields(config, 'edit_') }}</div>
+      <div class="modal-footer"><button class="btn btn-rail" type="submit">Update</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

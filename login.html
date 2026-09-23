@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block auth %}
+<main class="login-screen">
+  <section class="login-card">
+    <div class="login-mark"><i class="fa-solid fa-train-subway"></i></div>
+    <h1>Railway DBMS</h1>
+    <p>Secure administrator access</p>
+    <form method="post" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input class="form-control" name="username" value="admin" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input class="form-control" type="password" name="password" value="admin123" required>
+      </div>
+      <button class="btn btn-rail w-100" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

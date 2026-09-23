@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div><h2><i class="fa-solid fa-gear"></i> System Settings</h2><p>Application and database configuration overview.</p></div>
+</section>
+<section class="panel">
+  <div class="info-list">
+    <span>Application Version <strong>{{ app_version }}</strong></span>
+    <span>Database Name <strong>{{ db_name }}</strong></span>
+    <span>Session User <strong>{{ current_user.username }}</strong></span>
+    <span>Theme <strong>Railway Enterprise Blue</strong></span>
+  </div>
+</section>
+{% endblock %}

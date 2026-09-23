@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "railops"
+region = "us-east-1"
+
+[default.local_start_api.parameters]
+port = 3000
+warm_containers = "EAGER"

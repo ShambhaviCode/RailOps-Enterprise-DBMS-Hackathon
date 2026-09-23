@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: RailOps Enterprise DBMS - operational statistics Lambda (AWS SAM, runs locally with sam local).
+
+Resources:
+  RailOpsStatsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: railops-stats
+      Description: Computes railway operational statistics and an attention list from a RailOps data snapshot
+      CodeUri: functions/stats/
+      Handler: app.handler
+      Runtime: python3.12
+      Timeout: 15
+      MemorySize: 128
+      Events:
+        Stats:
+          Type: Api
+          Properties:
+            Path: /stats
+            Method: post
+
+Outputs:
+  StatsFunction:
+    Value: !Ref RailOpsStatsFunction
+  LocalStatsUrl:
+    Description: URL served by `sam local start-api`
+    Value: http://127.0.0.1:3000/stats

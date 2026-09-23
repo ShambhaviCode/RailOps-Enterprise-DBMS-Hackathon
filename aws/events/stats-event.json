@@ -1,0 +1,8 @@
+{
+  "httpMethod": "POST",
+  "path": "/stats",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": "{\"trains\": [{\"number\": \"12951\", \"name\": \"Mumbai Rajdhani\", \"source\": \"Mumbai Central\", \"destination\": \"New Delhi\", \"capacity\": 1150}, {\"number\": \"12002\", \"name\": \"Shatabdi Express\", \"source\": \"New Delhi\", \"destination\": \"Bhopal\", \"capacity\": 900}, {\"number\": \"12627\", \"name\": \"Karnataka Express\", \"source\": \"Bengaluru\", \"destination\": \"New Delhi\", \"capacity\": 1250}, {\"number\": \"101\", \"name\": \"chennai express\", \"source\": \"blr\", \"destination\": \"chennai\", \"capacity\": 50}], \"stations\": [{\"code\": \"NDLS\", \"name\": \"New Delhi\", \"city\": \"Delhi\", \"state\": \"Delhi\", \"platforms\": 16}, {\"code\": \"MMCT\", \"name\": \"Mumbai Central\", \"city\": \"Mumbai\", \"state\": \"Maharashtra\", \"platforms\": 9}, {\"code\": \"SBC\", \"name\": \"KSR Bengaluru\", \"city\": \"Bengaluru\", \"state\": \"Karnataka\", \"platforms\": 10}], \"routes\": [{\"code\": \"R-NDLS-MMCT\", \"name\": \"Delhi Mumbai Corridor\", \"source\": \"New Delhi\", \"destination\": \"Mumbai Central\", \"distance_km\": 1384}, {\"code\": \"R-NDLS-BPL\", \"name\": \"Delhi Bhopal Expressway\", \"source\": \"New Delhi\", \"destination\": \"Bhopal\", \"distance_km\": 707}], \"schedules\": [{\"train\": \"12951 Mumbai Rajdhani\", \"route\": \"Delhi Mumbai Corridor\", \"arrival\": \"08:15\", \"departure\": \"08:35\", \"platform\": \"4\"}], \"employees\": [{\"code\": \"EMP001\", \"name\": \"Amit Sharma\", \"role\": \"Station Master\", \"department\": \"Operations\", \"status\": \"Active\"}]}"
+}

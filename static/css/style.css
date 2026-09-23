@@ -1,0 +1,158 @@
+:root {
+  --rail-blue: #08284a;
+  --rail-blue-2: #0d3d6e;
+  --rail-gold: #f3b21b;
+  --ink: #172033;
+  --surface: #ffffff;
+  --line: #d8e0ea;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #eef3f8;
+  color: var(--ink);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.top-header {
+  min-height: 86px;
+  padding: 14px 26px;
+  background: linear-gradient(90deg, #061a33, var(--rail-blue));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand-block, .header-meta, .actions, .toolbar { display: flex; align-items: center; gap: 14px; }
+.rail-logo, .login-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  background: var(--rail-gold);
+  color: #071f3e;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+}
+.brand-block h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0; }
+.brand-block p { margin: 2px 0 0; color: #c5d7ec; }
+.header-meta { flex-wrap: wrap; justify-content: flex-end; font-size: 14px; }
+
+.rail-nav {
+  background: #0b3561;
+  border-top: 1px solid rgba(255,255,255,.12);
+  border-bottom: 3px solid var(--rail-gold);
+}
+.rail-nav .nav-link { color: #eaf3ff; font-weight: 600; padding: 10px 18px; }
+.rail-nav .nav-link:hover { color: var(--rail-gold); }
+
+.app-shell { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 138px); }
+.sidebar {
+  background: #08284a;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sidebar a {
+  color: #dcecff;
+  text-decoration: none;
+  padding: 13px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.sidebar a:hover { background: rgba(255,255,255,.12); color: #fff; }
+.sidebar i { width: 24px; color: var(--rail-gold); }
+
+.content { padding: 22px; }
+.hero-card {
+  min-height: 300px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 46px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 16px 35px rgba(8, 40, 74, .22);
+  animation: fadeUp .45s ease both;
+}
+.hero-card h2 { max-width: 720px; margin: 16px 0 10px; font-size: 38px; font-weight: 800; }
+.hero-card p { max-width: 680px; color: #e5edf7; font-size: 17px; }
+
+.panel, .stat-card, .login-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(12, 46, 82, .08);
+}
+.panel { padding: 20px; margin-top: 20px; }
+.panel h3 { font-size: 20px; margin-bottom: 16px; font-weight: 800; }
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.info-list { display: grid; gap: 10px; }
+.info-list span {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 8px;
+}
+
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 20px; }
+.stat-card { padding: 18px; display: flex; gap: 16px; align-items: center; transition: transform .18s ease, box-shadow .18s ease; }
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(12, 46, 82, .15); }
+.stat-card > i { font-size: 34px; width: 44px; }
+.stat-card span { display: block; color: #617086; font-weight: 700; }
+.stat-card strong { display: block; font-size: 32px; line-height: 1.1; margin: 4px 0 10px; }
+
+.quick-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.btn-rail { background: var(--rail-blue-2); border-color: var(--rail-blue-2); color: #fff; font-weight: 700; }
+.btn-rail:hover { background: #061f3d; border-color: #061f3d; color: #fff; }
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.page-heading h2 { margin: 0; font-weight: 800; color: var(--rail-blue); }
+.page-heading p { margin: 4px 0 0; color: #65758b; }
+.toolbar { margin-bottom: 16px; }
+.toolbar .form-control { max-width: 380px; }
+.table thead th { background: #e6eef7; color: #12355a; white-space: nowrap; }
+.table a { color: inherit; text-decoration: none; }
+.actions form { display: inline; }
+
+.login-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(rgba(6,26,51,.78), rgba(6,26,51,.88)), url("../img/railway-hero.png") center/cover, url("../railway-hero.png") center/cover;
+  padding: 22px;
+}
+.login-card { width: min(420px, 100%); padding: 30px; }
+.login-card h1 { margin: 16px 0 4px; color: var(--rail-blue); font-weight: 800; }
+.login-card p { color: #64748b; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1100px) {
+  .stats-grid, .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .app-shell { grid-template-columns: 220px 1fr; }
+}
+@media (max-width: 760px) {
+  .top-header, .page-heading { align-items: flex-start; flex-direction: column; }
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { display: grid; grid-template-columns: 1fr 1fr; }
+  .stats-grid, .info-grid, .quick-grid { grid-template-columns: 1fr; }
+  .content { padding: 14px; }
+  .hero-card { padding: 24px; min-height: 260px; }
+  .hero-card h2 { font-size: 28px; }
+}
