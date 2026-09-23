@@ -2,11 +2,12 @@
 
 ### Smart Railway Operations & Management System
 
-> A full-stack railway operations platform for managing **trains, stations, routes, schedules, employees, reports, and AWS-powered operational insights**.
+> A full-stack Railway Database Management System for **railway operations and administration** covering trains, stations, routes, schedules, employees, reports, and **AWS-powered Operational Insights**.
 
 <p align="center">
 
-🚀 [Live Demo](https://rail-ops-enterprise-dbms.vercel.app/)
+🚀 [Live Demo](https://rail-ops-enterprise-dbms.vercel.app) •
+💻 [GitHub](https://github.com/ShambhaviCode/RailOps-Enterprise-DBMS-Hackathon)
 
 </p>
 
@@ -15,7 +16,7 @@
 ![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-FF9900?logo=awslambda&logoColor=white)
 ![AWS SAM](https://img.shields.io/badge/AWS-SAM-FF9900?logo=amazonaws&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)
-![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?logo=vercel&logoColor=white)
+![Vercel](https://img.shields.io/badge/Deployment-Vercel-black?logo=vercel&logoColor=white)
 
 ---
 
@@ -25,21 +26,21 @@ RailOps focuses on the **operational layer behind railway journeys**.
 
 **Trains → Routes → Stations → Schedules → Platforms → Employees → Reports**
 
-It provides a centralized web platform for railway administration, database management, scheduling, reporting, and operational analytics.
+It provides a centralized web application for railway administration, database management, scheduling, reporting, and operational analytics.
 
 ---
 
 ## ✨ Features
 
 - 🚆 **Train Management** — CRUD, search, sorting & pagination
-- 📍 **Station Management** — stations, codes, locations & platforms
+- 📍 **Station Management** — station codes, locations & platforms
 - 🛤️ **Route Management** — railway connections & distances
 - 🕐 **Schedule Management** — trains, routes, timings & platforms
 - 👥 **Employee Management** — roles, departments & status
 - 📊 **Reports** — PDF, Excel & CSV exports
 - 📈 **Dashboard** — statistics, latest records & quick actions
-- 🔐 **Admin Authentication** — protected administrative workflows
-- 💡 **Operational Insights** — fleet, network & scheduling analytics
+- 🔐 **Admin Authentication** — secure administrator login
+- 💡 **Operational Insights** — fleet, network, scheduling & attention analysis
 
 ---
 
@@ -66,7 +67,7 @@ RailOps includes an **AWS Lambda** operational-insights component built with **A
    ├── 🛤️ Network Statistics
    ├── 🕐 Scheduling Analysis
    └── ⚠️ Attention List
-🧪 Run locally
+🧪 Run AWS Locally
 cd aws
 sam validate --lint
 sam local invoke RailOpsStatsFunction --event events/stats-event.json
@@ -85,18 +86,31 @@ The Lambda processes a read-only operational snapshot and returns structured ins
        │
        ├──────► 🗄️ SQLite / MySQL
        │
-       └──────► ☁️ AWS Lambda
+       └──────► ☁️ AWS SAM
+                    │
+                    ▼
+                 ⚡ Lambda
+               railops-stats
                     │
                     ▼
                💡 Insights
 🛠️ Tech Stack
 Layer	Technology
-🐍 Backend	Python, Flask
+🐍 Backend	Python, Flask, Flask-SQLAlchemy
 🗄️ Database	SQLite / MySQL
 🎨 Frontend	HTML, CSS, JavaScript, Bootstrap 5.3
 ☁️ AWS	Lambda, SAM CLI
 📊 Reports	PDF, Excel, CSV
 🚀 Deployment	Vercel
+🗄️ Database Design
+Entity	Purpose
+👤 User	Administrator accounts
+🚆 Train	Fleet master data
+📍 Station	Railway network nodes
+🛤️ Route	Railway network connections
+🕐 Schedule	Train timetable and platform assignments
+👥 Employee	Workforce management
+📊 Report	Report generation and audit data
 📸 Screenshots
 🖥️ Dashboard
 
@@ -125,11 +139,8 @@ Built as a solo project for the WeMakeDevs × AWS First Commit Hackathon under t
 
 👩‍💻 Built By
 Shambhavi M K
-
 Solo Developer & Team Leader
 
-💻 GitHub
-💼 LinkedIn
 
 <p align="center">
 🚆 Connected Data. Smarter Operations. Better Railway Management.
@@ -140,3 +151,4 @@ Solo Developer & Team Leader
 📜 License
 
 MIT License © Shambhavi
+
