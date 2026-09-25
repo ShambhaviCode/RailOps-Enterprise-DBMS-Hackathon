@@ -141,12 +141,7 @@ The Lambda processes a **read-only operational snapshot** and returns structured
 ## 📸 Screenshots
 
 ### 🖥️ Dashboard
-
-![RailOps Dashboard](https://github.com/user-attachments/assets/80a22fb6-a6fd-47fe-ac0d-67d0501fc9f7)
-
-### ⚙️ Management Module
-
-![RailOps Management](https://github.com/user-attachments/assets/dbfc3f43-f6b4-428b-9cb9-245c63f36274)
+<img width="1900" height="796" alt="image" src="https://github.com/user-attachments/assets/7b635a9f-9032-48df-bde4-4cd3cca86622" />
 
 ---
 
