@@ -161,6 +161,13 @@ pip install -r requirements.txt
 python run.py
 ```
 
+Run the tests:
+
+```powershell
+pip install pytest
+python -m pytest
+```
+
 
 ### 🔑 Demo Login
 
