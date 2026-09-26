@@ -638,7 +638,7 @@ def register_routes(app):
             output = io.StringIO()
             writer = csv.writer(output)
             writer.writerow(headers)
-            writer.writerows(rows)
+            writer.writerows([csv_safe(value) for value in row] for row in rows)
             response = make_response(output.getvalue())
             response.headers["Content-Disposition"] = f"attachment; filename={filename}"
             response.headers["Content-Type"] = "text/csv"
@@ -653,6 +653,11 @@ def register_routes(app):
             sheet.append(headers)
             for row in rows:
                 sheet.append(row)
+                # openpyxl turns any string starting with "=" into a live
+                # formula; store user-entered values as plain text instead.
+                for cell in sheet[sheet.max_row]:
+                    if cell.data_type == "f":
+                        cell.data_type = "s"
             stream = io.BytesIO()
             workbook.save(stream)
             stream.seek(0)
@@ -683,6 +688,20 @@ def report_dataset(report_type):
         "employee": (["Code", "Name", "Role", "Department", "Phone", "Email", "Status"], [[e.employee_code, e.full_name, e.role, e.department, e.phone, e.email, e.status] for e in Employee.query.all()]),
     }
     return datasets.get(report_type, datasets["train"])
+
+
+FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
+
+
+def csv_safe(value):
+    """Stop spreadsheet apps evaluating user-entered text as a formula.
+
+    Prefixes text that starts with a formula trigger with a single quote,
+    as recommended by OWASP for CSV injection. Numbers are left as-is.
+    """
+    if isinstance(value, str) and value.startswith(FORMULA_PREFIXES):
+        return "'" + value
+    return value
 
 
 def pdf_escape(value):
