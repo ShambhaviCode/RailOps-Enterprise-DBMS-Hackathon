@@ -695,12 +695,19 @@ def build_simple_pdf(title, headers, rows):
     y = 760
     content_lines = ["BT", "/F1 16 Tf", f"50 {y} Td", f"({pdf_escape(lines[0])}) Tj"]
     content_lines.extend(["/F1 9 Tf"])
-    for line in lines[2:]:
-        y -= 18
-        content_lines.append(f"50 {y} Td")
-        content_lines.append(f"({pdf_escape(line[:130])}) Tj")
-        if y < 60:
+    body = lines[2:]
+    # Td offsets are relative to the previous line's start, so step down by
+    # the line height rather than passing absolute coordinates.
+    step = 24
+    for index, line in enumerate(body):
+        if y - step < 60:
+            content_lines.append("0 -18 Td")
+            content_lines.append(f"(... {len(body) - index} more rows not shown) Tj")
             break
+        y -= step
+        content_lines.append(f"0 -{step} Td")
+        content_lines.append(f"({pdf_escape(line[:130])}) Tj")
+        step = 18
     content_lines.append("ET")
     content = "\n".join(content_lines).encode("latin-1", "replace")
     objects = [
